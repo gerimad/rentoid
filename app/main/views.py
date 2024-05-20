@@ -12,9 +12,10 @@ from sklearn.preprocessing import MinMaxScaler
 
 @main.route('/')
 def index():
-    listings = Flat.query.all()
-    print(len(listings))
-    return render_template('entries.html', listings=listings)
+    # listings = Flat.query.all()
+    # print(len(listings))
+    # return render_template('entries.html', listings=listings)
+    return render_template('index.html')
 
 @main.route('/summarise', methods=['GET','POST'])
 def summarise():
