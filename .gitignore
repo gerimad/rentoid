@@ -5,3 +5,4 @@ migrations/
 data.sqlite
 db.csv
 dbase1
+dev-data.sqlite
