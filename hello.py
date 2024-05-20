@@ -3,8 +3,8 @@ import os
 from flask import Flask, render_template, session, redirect, url_for, flash
 from flask_bootstrap import Bootstrap
 from flask_wtf import FlaskForm
-from wtforms import StringField, SubmitField
-from wtforms.validators import DataRequired
+from wtforms import StringField, SubmitField, RadioField
+from wtforms.validators import DataRequired, InputRequired
 from flask_sqlalchemy import SQLAlchemy
 
 import pandas as pd
@@ -58,6 +58,11 @@ class ListingForm(FlaskForm):
     submit = SubmitField('Summarize')
 
 
+class RatingForm(FlaskForm):
+    rating = RadioField('Rating', choices=[('1', '1'), ('2', '2'), ('3', '3'), ('4', '4'), ('5', '5')], validators=[InputRequired()])
+    submit = SubmitField('Submit')
+
+
 @app.route('/')
 def display_entries():
     listings = Flat.query.all()
@@ -69,13 +74,12 @@ def summariser():
     form = ListingForm()
     if form.validate_on_submit():
         old_text = session.get('text')
-        if old_text is not None and old_text != form.text.data:
-            flash('Submitted the listing succesfully!')
+        flash('Submitted the listing succesfully!')
         session['text'] = infer.inference(form.text.data)
         return redirect(url_for('summariser'))
     return render_template('summariser.html', form=form, text=session.get('text'))
 
-@app.route('/recommend', methods=['GET'])
+@app.route('/recommend', methods=['GET', 'POST'])
 def recommend():
     flats_df = pd.read_sql_table('flats', db.engine.connect())
     user_ratings_df = pd.read_sql_table('ratings', db.engine.connect())
@@ -96,8 +100,14 @@ def recommend():
     # FIXME id doesn't work for someresason
     flat_id = recommend_flats['id'].iloc[0]
     best = db.session.query(Flat).filter_by(id=int(flat_id)).one()
+    summary = infer.inference(best.text)
 
-    return render_template('recommend.html', listing=best)
+    form = RatingForm()
+    if form.validate_on_submit():
+        old_rating = session.get('rating')
+        flash('Submitted the rating succesfully!')
+
+    return render_template('recommend.html', listing=summary, form=form)
 
 if __name__ == '__main__':
     app.run(debug=True)
