@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Summarise Your Listing{% endblock %}
+
+{% block page_content %}
+<div class="container" style="width: 600px;">
+    {{ wtf.quick_form(form) }}
+    <p class="font-italic">{% if text %}Listing: {{ text }}{% else %}{% endif %}</p>
+</div>
+
+{% endblock %}

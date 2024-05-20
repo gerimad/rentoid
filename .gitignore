@@ -1,0 +1,7 @@
+venv/
+__pycache__/
+alberlet_model_save/
+migrations/
+data.sqlite
+db.csv
+dbase1
