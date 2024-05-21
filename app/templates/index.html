@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block title %}Rentoid{% endblock %}
+
+{% block page_content %}
+<h1 class="page-header">
+Hello,
+{% if current_user.is_authenticated %}
+    {{ current_user.username }}
+{% else %}
+    Stranger
+{% endif %}!
+</h1>
+{% endblock %}

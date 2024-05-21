@@ -21,6 +21,13 @@
                 <li><a href="/summarise">Summarise</a></li>
                 <li><a href="/recommend">Recommender</a></li>
             </ul>
+            <ul class="nav nabar-nav navbar-right">
+                {% if current_user.is_authenticated %}
+                <li><a href="{{ url_for('auth.logout') }}">Log Out</a></li>
+                {% else %}
+                <li><a href="{{ url_for('auth.login') }}">Log In</a></li>
+                {% endif %}
+            </ul>
         </div>
     </div>
 </div>
