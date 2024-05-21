@@ -9,16 +9,14 @@ from ..models import Flat, Rating
 @recommender.route('/recommend', methods=['GET', 'POST'])
 @login_required
 def recommend():
-    
     best_flat = current_user.get_best_flat()
-
     form = RatingForm()
     if form.validate_on_submit():
         current_user.rate_flat(best_flat, form.score.data)
         db.session.commit()
         flash('Submitted the rating succesfully!')
         return redirect(url_for('.recommend'))
-    return render_template('recommend.html', summary=infer.inference(best_flat.text), form=form, flat=best_flat)
+    return render_template('recommend.html', summary=best_flat.text, form=form, flat=best_flat)
     
 
 # @recommender.route('/rate/<int:flat_id>/<float:score>')
