@@ -1,15 +1,21 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Recommend Flat{% endblock %}
+{% block title %}Recommend Me a Flat{% endblock %}
 
 {% block page_content %}
 <div class="container" style="width: 600px;">
-    <p class="font-italic">{{ listing }}</p>
+    <p class="font-italic">{{ summary }}</p>
 </div>
 
 <div class="container" style="width: 600px;">
-    {{ wtf.quick_form(form)}}
+    {{ wtf.quick_form(form) }}
+    {% if current_user.has_liked_flat(flat) %}
+    <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
+    {% else %}
+    <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
+    {% endif %}
 </div>
+
 
 {% endblock %}
