@@ -123,6 +123,7 @@ class User(db.Model, UserMixin):
         best = db.session.query(Flat).filter_by(id=int(best_flat_id)).first()
         return best
 
+
 @login_manager.user_loader
 def load_user(user_id):
     return User.query.get(int(user_id))

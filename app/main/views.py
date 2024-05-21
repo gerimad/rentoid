@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from . import main
 from .forms import ListingForm, RatingForm
 from .. import db, infer
-from ..models import Flat
+from ..models import Flat, Rating, Like
 
 
 import pandas as pd
@@ -15,7 +15,17 @@ def index():
     # listings = Flat.query.all()
     # print(len(listings))
     # return render_template('entries.html', listings=listings)
-    return render_template('index.html')
+    liked_flats = None
+    rated_flats = None
+
+    if current_user.is_authenticated:
+        liked_flat_ids = [like.flat_id for like in current_user.liked.all()]
+        rated_flat_ids = [rating.flat_id for rating in current_user.rated.all()]
+
+        rated_flats = Flat.query.filter(Flat.id.in_(rated_flat_ids)).all()
+        liked_flats = Flat.query.filter(Flat.id.in_(liked_flat_ids)).all()
+
+    return render_template('index.html', liked_flats=liked_flats, rated_flats=rated_flats)
 
 @main.route('/summarise', methods=['GET','POST'])
 def summarise():
@@ -26,6 +36,11 @@ def summarise():
         session['text'] = infer.inference(form.text.data)
         return redirect(url_for('.summarise'))
     return render_template('summariser.html', form=form, text=session.get('text'))
+
+@main.route('/flat/<int:flat_id>')
+def flat(flat_id):
+    flat = Flat.query.filter_by(id=flat_id).first()
+    return render_template('flat.html', flat=flat)
 
 
 # @main.route('/recommend', methods=['GET', 'POST'])

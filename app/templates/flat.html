@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+
+{% block title %}Flat {{ flat.id }}{% endblock %}
+
+{% block page_content %}
+
+<div class="container" style="width: 600px;">
+    <p> Advert: {{ flat.text }}</p>
+    <p> Price: {{ flat.price }}</p>
+    <p> Location: {{ flat.location }} </p>
+    <p> SQM: {{ flat.sqm }}</p>
+</div>
+
+{% endblock %}
