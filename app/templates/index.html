@@ -3,72 +3,73 @@
 {% block title %}Rentoid{% endblock %}
 
 {% block page_content %}
-<div class="container" style="width: 600px;">
+<div class="container">
 <h1 class="page-header"> Hello,
 {% if current_user.is_authenticated %}
-    {{ current_user.username }}
+    {{ current_user.username }}!
 {% else %}
-    Stranger
-{% endif %}!
+    Stranger!
+{% endif %}
 </h1>
 </div>
 
-<div class="container" style="width: 600px;">
-<h1>Favourite Flats</h1>
-<p>
-{% if current_user.is_authenticated %}
-    {% if liked_flats is defined %}
-        {% for liked_flat in liked_flats %}
-        <ul class="posts">
-            <li class="post">
-                <div class="post-body">
-                    {{ liked_flat.id }} <br>
-                    {{ liked_flat.price }} <br>
-                    {{ liked_flat.sqm }} <br>
-                    {{ liked_flat.location }} 
-                </div>
-                <div>
-                    <a href="{{ url_for('.flat', flat_id=liked_flat.id) }}">Details</a>
-                </div>
-            </li>
+<div class="container">
+<div class="container col-md-6">
+    <h1>Favourite Flats</h1>
+    {% if current_user.is_authenticated %}
+        {% if liked_flats is defined %}
+            {% for liked_flat in liked_flats %}
+            <ul class="posts">
+                <li class="post">
+                    <div class="post-body">
+                        <strong>ID: </strong>{{ liked_flat.id }} <br>
+                        <strong>Price: </strong>{{ liked_flat.price }} <br>
+                        <strong>SQM: </strong>{{ liked_flat.sqm }} <br>
+                        <strong>Location: </strong>{{ liked_flat.location }} 
+                    </div>
+                    <div>
+                        <a href="{{ url_for('.flat', flat_id=liked_flat.id) }}">More details</a>
+                    </div>
+                </li>
 
-        </ul>
-        {% endfor %}
+            </ul>
+            {% endfor %}
+        {% else %}
+        <p> You dont have any favourite flats.</p>
+        {% endif %}
     {% else %}
-    <p> You dont have any favourite flats.</p>
+        Login to see your favourite flats.
     {% endif %}
-{% else %}
-    Login to see your favourite flats.
-{% endif %}
-</p>
 
-<h1>Rated flats</h1>
-<p>
-{% if current_user.is_authenticated %}
-    {% if rated_flats is defined %}
-        {% for rated_flat in rated_flats %}
-        <ul class="posts">
-            <li class="post">
-                <div class="post-body">
-                    {{ rated_flat.id }} <br>
-                    {{ rated_flat.price }}  <br>
-                    {{ rated_flat.sqm }}  <br>
-                    {{ rated_flat.location }} 
-                </div>
-                <div>
-                    <a href="{{ url_for('.flat', flat_id=rated_flat.id) }}">Details</a>
-                </div>
-            </li>
-
-        </ul>
-        {% endfor %}
-    {% else %}
-    <p> You dont have any rated flats. Click here to rate some.</p>
-    {% endif %}
-{% else %}
-    Login to see your rated flats.
-{% endif %}
-</p>
-    
 </div>
+<div class="container col-md-6">
+    <h1>Rated flats</h1>
+    {% if current_user.is_authenticated %}
+        {% if rated_flats is defined %}
+            {% for rated_flat in rated_flats %}
+            <ul class="posts">
+                <li class="post">
+                    <div class="post-body">
+                        <strong>ID: </strong>{{ rated_flat.id }} <br>
+                        <strong>Price: </strong>{{ rated_flat.price }}  <br>
+                        <strong>SQM: </strong>{{ rated_flat.sqm }}  <br>
+                        <strong>Location: </strong>{{ rated_flat.location }} <br>
+                    </div>
+                    <div>
+                        <a href="{{ url_for('.flat', flat_id=rated_flat.id) }}">More details</a>
+                    </div>
+                </li>
+
+            </ul>
+            {% endfor %}
+        {% else %}
+        <p> You dont have any rated flats. Click here to rate some.</p>
+        {% endif %}
+    {% else %}
+        Login to see your rated flats.
+    {% endif %}
+    
+    </div>
+</div>
+
 {% endblock %}

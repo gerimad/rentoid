@@ -6,7 +6,15 @@
 {% block page_content %}
 <div class="container" style="width: 600px;">
     {{ wtf.quick_form(form) }}
-    <p class="font-italic">{% if text %}Listing: {{ text }}{% else %}{% endif %}</p>
+    <p class="font-italic">
+        {% if text %}
+        Listing: 
+        {% autoescape false %}
+        {{ text }}
+        {% endautoescape %}
+        {% else %}
+        {% endif %}
+    </p>
 </div>
 
 

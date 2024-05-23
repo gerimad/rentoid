@@ -36,6 +36,9 @@ class Rating(db.Model):
     
     def __str__(self):
         return jsonify(self)
+    
+    def get_author(self):
+        return User.query.filter_by(id=self.user_id).first().username
 
 class Like(db.Model):
     __tablename__ = 'likes'
@@ -122,6 +125,12 @@ class User(db.Model, UserMixin):
 
         best = db.session.query(Flat).filter_by(id=int(best_flat_id)).first()
         return best
+    
+    def get_rating(self, flat):
+        if self.has_rated_flat():
+            return self.rated.filter_by(flat_id=flat.id).first().rating 
+        else:
+            raise ValueError
 
 
 @login_manager.user_loader

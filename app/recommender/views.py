@@ -3,6 +3,7 @@ from flask import redirect, request, flash, session, render_template, url_for
 from .. import db, infer
 from . import recommender
 from .forms import RatingForm
+from ..main.forms import SummariseForm
 from ..models import Flat, Rating
 
 
@@ -11,12 +12,21 @@ from ..models import Flat, Rating
 def recommend():
     best_flat = current_user.get_best_flat()
     form = RatingForm()
+    form2 = SummariseForm()
+
+    summary = None
+    if form2.validate_on_submit():
+        summary = infer.inference(best_flat.text)
+        flash('Summary created!')
+        #return redirect(url_for('.recommend'))
+
     if form.validate_on_submit():
         current_user.rate_flat(best_flat, form.score.data)
         db.session.commit()
         flash('Submitted the rating succesfully!')
         return redirect(url_for('.recommend'))
-    return render_template('recommend.html', summary=best_flat.text, form=form, flat=best_flat)
+
+    return render_template('recommend.html', text=best_flat.text, summary=summary, form=form, form2=form2, flat=best_flat)
     
 
 # @recommender.route('/rate/<int:flat_id>/<float:score>')
