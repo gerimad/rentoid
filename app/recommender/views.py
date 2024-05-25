@@ -22,12 +22,12 @@ def recommend():
         return redirect(url_for('.recommend'))
 
     if form2.submit.data and form2.validate():
-        summary = infer.inference(best_flat.text).replace('\n', '<br>')
+        summary = infer.inference(best_flat.text)
         flash('Summary created!')
         #return redirect(url_for('.recommend'))
 
 
-    return render_template('recommend.html', text=best_flat.text, summary=summary, form=form, form2=form2, flat=best_flat)
+    return render_template('recommend.html', summary=summary, form=form, form2=form2, flat=best_flat)
     
 
 # @recommender.route('/rate/<int:flat_id>/<float:score>')

@@ -7,18 +7,33 @@
 
 <div class="container">
     <h1 class="page-header">Flat #{{ flat.id }} Details</h1>
-    <div class="container col-md-6">
+    <div class="container col-md-4">
         <h3>Advert:</h3>
-        {{ flat.text }}
-        {{ wtf.quick_form(form)}}
-        {% if summary is not none %}
-            <h3>Summary</h3>
-            {{ summary }}
+
+        {% if flat.text %}
+        {% autoescape false %}
+        {{ flat.text.replace('\n', '<br>') }}
+        {% endautoescape %}
         {% else %}
         {% endif %}
-
     </div>
-    <div class="container col-md-6">
+
+    <div class="container col-md-4">
+        <h3>Summary</h3>
+        {{ wtf.quick_form(form)}}
+
+        {% if summary is not none %}
+            {% if summary %}
+            {% autoescape false %}
+            {{ summary.replace('\n', '<br>') }}
+            {% endautoescape %}
+            {% else %}
+            {% endif %}
+        {% else %}
+        {% endif %}
+    </div>
+
+    <div class="container col-md-4">
         <h3>Price:</h3>
         {{ flat.price }}
         <h3>Location:</h3>

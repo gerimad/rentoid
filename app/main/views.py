@@ -46,7 +46,7 @@ def flat(flat_id):
     if form.validate_on_submit():
         summary = infer.inference(flat.text)
         flash('Summary successfully created!')
-
+    
     return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary)
 
 
