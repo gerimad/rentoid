@@ -30,15 +30,6 @@ def recommend():
     return render_template('recommend.html', summary=summary, form=form, form2=form2, flat=best_flat)
     
 
-# @recommender.route('/rate/<int:flat_id>/<float:score>')
-# @login_required
-# def rate_flat(flat_id, score):
-#     flat = Flat.query.filter_by(id=flat_id).first()
-#     current_user.rate_flat(flat, score)
-#     db.session.commit()
-#     return redirect(request.referrer)
-
-
 @recommender.route('/like/<int:flat_id>/<action>')
 @login_required
 def like_action(flat_id, action):

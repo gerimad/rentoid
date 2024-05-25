@@ -12,9 +12,6 @@ from sklearn.preprocessing import MinMaxScaler
 
 @main.route('/')
 def index():
-    # listings = Flat.query.all()
-    # print(len(listings))
-    # return render_template('entries.html', listings=listings)
     liked_flats = None
     rated_flats = None
 
@@ -48,47 +45,3 @@ def flat(flat_id):
         flash('Summary successfully created!')
     
     return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary)
-
-
-# @main.route('/recommend', methods=['GET', 'POST'])
-# @login_required
-# def recommend():
-#     flats_df = pd.read_sql_table('flats', db.engine.connect())
-#     user_ratings_df = pd.read_sql_table('ratings', db.engine.connect())
-#     rated_flats_df = flats_df.merge(user_ratings_df, left_on='id', right_on='flat_id')
-    
-#     scaler = MinMaxScaler()
-
-#     flats_df[['price', 'rooms', 'sqm']] = scaler.fit_transform(flats_df[['price', 'rooms', 'sqm']])
-#     rated_flats_df[['price', 'rooms', 'sqm']] = scaler.transform(rated_flats_df[['price', 'rooms', 'sqm']])
-
-#     weigthed_features = rated_flats_df[['price', 'rooms', 'sqm']].multiply(rated_flats_df['rating'], axis=0)
-#     user_profile = weigthed_features.sum(axis=0) / rated_flats_df['rating'].sum()
-
-#     flats_df['similarity'] = cosine_similarity(flats_df[['price', 'rooms', 'sqm']], [user_profile]).flatten()
-#     recommend_flats = flats_df.sort_values(by='similarity', ascending=False)
-#     print(recommend_flats[['similarity', 'id']])
-
-#     flat_id = recommend_flats['id'].iloc[0]
-#     best = db.session.query(Flat).filter_by(id=int(flat_id)).first()
-#     summary = infer.inference(best.text)
-
-#     form = RatingForm()
-#     if form.validate_on_submit():
-#         old_rating = session.get('rating')
-#         flash('Submitted the rating succesfully!')
-
-#     return render_template('recommend.html', flat=best, summary=summary, form=form)
-
-
-# @main.route('/like/<int:flat_id>/<action>')
-# @login_required
-# def like_action(flat_id, action):
-#     flat = Flat.query.filter_by(id=flat_id).first_or_404()
-#     if action == 'like':
-#         current_user.like_flat(flat)
-#         db.session.commit()
-#     if action == 'unlike':
-#         current_user.unlike_flat(flat)
-#         db.session.commit()
-#     return redirect(request.referrer)
