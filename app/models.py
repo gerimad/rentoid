@@ -94,10 +94,13 @@ class User(db.Model, UserMixin):
             db.session.add(rating)
 
     def get_best_flat(self):
+        if self.rated.count() == 0:
+            return Flat.query.first()
+
         joined_table = db.session.query(Flat, Rating) \
             .join(Rating, Flat.id == Rating.flat_id) \
             .filter_by(user_id=self.id).all()
-    
+
         rated_data = [(flat.id, flat.price, flat.rooms, flat.sqm, rating.rating) for flat, rating in joined_table]
         rated_flats = pd.DataFrame(rated_data, columns=['flat_id', 'price', 'rooms', 'sqm', 'rating'])
 
