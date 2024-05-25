@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from . import main
-from .forms import ListingForm, RatingForm
+from .forms import ListingForm, RatingForm, SummariseForm
 from .. import db, infer
 from ..models import Flat, Rating, Like
 
@@ -30,17 +30,24 @@ def index():
 @main.route('/summarise', methods=['GET','POST'])
 def summarise():
     form = ListingForm()
+    text = None
     if form.validate_on_submit():
-        old_text = session.get('text')
         flash('Submitted the listing succesfully!')
-        session['text'] = infer.inference(form.text.data)
-        return redirect(url_for('.summarise'))
-    return render_template('summariser.html', form=form, text=session.get('text'))
+        text = infer.inference(form.text.data).replace('\n', '<br>')
+    return render_template('summariser.html', form=form, text=text)
 
-@main.route('/flat/<int:flat_id>')
+@main.route('/flat/<int:flat_id>', methods=["GET", "POST"])
 def flat(flat_id):
     flat = Flat.query.filter_by(id=flat_id).first()
-    return render_template('flat.html', flat=flat)
+    ratings = Rating.query.filter_by(flat_id=flat_id).all()
+
+    form = SummariseForm()
+    summary = None
+    if form.validate_on_submit():
+        summary = infer.inference(flat.text)
+        flash('Summary successfully created!')
+    
+    return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary)
 
 
 # @main.route('/recommend', methods=['GET', 'POST'])

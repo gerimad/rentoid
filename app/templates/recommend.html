@@ -1,22 +1,49 @@
 {% extends "base.html" %}
 {% import "bootstrap/wtf.html" as wtf %}
 
-{% block title %}Recommend Me a Flat{% endblock %}
+{% block title %}Find your next flat{% endblock %}
 
 {% block page_content %}
-<div class="container" style="width: 600px;">
-    <p class="font-italic">{{ summary }}</p>
-    
-</div>
+<h1 class="container page-header">Recommended flat:</h1>
+<div class="container">
+    <div class="container col-md-6" style=>
+        <p class="font-italic">
+            {% if flat.text %}
+            <h3>Advert</h3>
+            {% autoescape false %}
+            {{ flat.text.replace('\n', '<br>') }}
+            {% endautoescape %}
+            {% else %}
+            {% endif %}
+        </p>
+    </div>
 
-<div class="container" style="width: 600px;">
-    {{ wtf.quick_form(form) }}
-    {% if current_user.has_liked_flat(flat) %}
-    <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
+    <div class="container col-md-6">
+    <h3>Summary</h3>
+    {{ wtf.quick_form(form2) }}
+    {% if summary is not none %}
+        <p class="font-italic">
+            {% if summary %}
+            {% autoescape false %}
+            {{ summary.replace('\n', '<br>') }}
+            {% endautoescape %}
+            {% else %}
+            {% endif %}
+        </p>
+
     {% else %}
-    <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
     {% endif %}
-</div>
+    </div>
 
+    <div class="container col-md-12">
+        
+        {{ wtf.quick_form(form) }}
+        {% if current_user.has_liked_flat(flat) %}
+        <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
+        {% else %}
+        <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
+        {% endif %}
+    </div>
+</div>
 
 {% endblock %}

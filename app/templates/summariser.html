@@ -4,9 +4,27 @@
 {% block title %}Summarise Your Listing{% endblock %}
 
 {% block page_content %}
-<div class="container" style="width: 600px;">
-    {{ wtf.quick_form(form) }}
-    <p class="font-italic">{% if text %}Listing: {{ text }}{% else %}{% endif %}</p>
+<div class="container">
+    <h1 class="page-header">Ask the AI assistant</h1>
+
+    <div class="container col-md-6">
+        On this page you can input any apartment listing of your choice and the AI assistant will extract the information from it.
+        It will also give you it's pro and cons.
+    </div>
+
+    <div class="container col-md-6">
+        {{ wtf.quick_form(form) }}
+        <p class="font-italic">
+            {% if text %}
+            Listing: 
+            {% autoescape false %}
+            {{ text }}
+            {% endautoescape %}
+            {% else %}
+            {% endif %}
+        </p>
+    </div>
+
 </div>
 
 

@@ -6,7 +6,9 @@ class ListingForm(FlaskForm):
     text = StringField('Enter your listing here:', validators=[DataRequired()])
     submit = SubmitField('Summarize')
 
-# to delete
 class RatingForm(FlaskForm):
     score = DecimalField('What score would you give this flat? (1-10)', validators=[NumberRange(min=0, max=10, message="lba")])
     submit = SubmitField('Submit')
+
+class SummariseForm(FlaskForm):
+    submit = SubmitField('Create summary')

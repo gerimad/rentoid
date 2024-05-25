@@ -5,11 +5,61 @@
 
 {% block page_content %}
 
-<div class="container" style="width: 600px;">
-    <p> Advert: {{ flat.text }}</p>
-    <p> Price: {{ flat.price }}</p>
-    <p> Location: {{ flat.location }} </p>
-    <p> SQM: {{ flat.sqm }}</p>
+<div class="container">
+    <h1 class="page-header">Flat #{{ flat.id }} Details</h1>
+    <div class="container col-md-4">
+        <h3>Advert:</h3>
+
+        {% if flat.text %}
+        {% autoescape false %}
+        {{ flat.text.replace('\n', '<br>') }}
+        {% endautoescape %}
+        {% else %}
+        {% endif %}
+    </div>
+
+    <div class="container col-md-4">
+        <h3>Summary</h3>
+        {{ wtf.quick_form(form)}}
+
+        {% if summary is not none %}
+            {% if summary %}
+            {% autoescape false %}
+            {{ summary.replace('\n', '<br>') }}
+            {% endautoescape %}
+            {% else %}
+            {% endif %}
+        {% else %}
+        {% endif %}
+    </div>
+
+    <div class="container col-md-4">
+        <h3>Price:</h3>
+        {{ flat.price }}
+        <h3>Location:</h3>
+        {{ flat.location }}
+        <h3>SQM:</h3>
+        {{ flat.sqm }}
+        <h3>
+            <a href="{{ flat.link }}" target="_blank">Go to the listing website</a>
+        </h3>
+    </div>
+
+    <div class="container col-md-12">
+        <h2>User Ratings</h2>
+        {% for rating in ratings %}
+            <ul class="posts">
+                <li class="post">
+                    <div class="post-body">
+                        <strong> {{ rating.get_author() }} </strong> <br>
+                        {{ rating.rating }}
+                    </div>
+                </li>
+            </ul>
+        {% endfor %}
+    </div>
 </div>
+
+
 
 {% endblock %}
