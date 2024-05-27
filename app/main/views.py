@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from . import main
 from .forms import ListingForm, RatingForm, SummariseForm
 from .. import db, infer
-from ..models import Flat, Rating, Like
+from ..models import Flat, Rating, Like, FlatError
 
 
 import pandas as pd
@@ -36,8 +36,14 @@ def summarise():
 @main.route('/flat/<int:flat_id>', methods=["GET", "POST"])
 @login_required
 def flat(flat_id):
-    flat = Flat.query.filter_by(id=flat_id).first()
+    flat = Flat.query.filter_by(id=flat_id).first_or_404()
     ratings = Rating.query.filter_by(flat_id=flat_id).all()
+
+    try:
+        avg_score = flat.average_rating()
+    except FlatError as e:
+        avg_score = None
+
 
     form = SummariseForm()
     summary = None
@@ -45,7 +51,7 @@ def flat(flat_id):
         summary = infer.inference(flat.text)
         flash('Summary successfully created!')
     
-    return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary)
+    return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary, avg_rating = avg_score)
 
 @main.route('/like/<int:flat_id>/<action>')
 @login_required

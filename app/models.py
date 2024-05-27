@@ -1,12 +1,18 @@
 from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask import jsonify
+from sqlalchemy import func
 from . import db, login_manager
 
 import numpy as np
 import pandas as pd
 from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
+
+class FlatError(Exception):
+    def __init__(self, message="An error occurred in the Flat class"):
+        self.message = message
+        super().__init__(self.message)
 
 class Flat(db.Model):
     __tablename__ = 'flats'
@@ -23,6 +29,14 @@ class Flat(db.Model):
     
     def __str__(self):
         return f'ID: {self.id}\nPrice: {self.price}\nSQM: {self.sqm}\n# of rooms: {self.rooms}\nLocation: {self.location}\nText: {self.text}\nLink: {self.link}'
+    
+    def average_rating(self):
+        ratings = Rating.query.filter_by(flat_id = self.id)
+        if ratings.count() == 0:
+            raise FlatError(f"Flat {self.id} has no ratings")
+        else:
+            avg_score = ratings.with_entities(func.avg(Rating.rating)).scalar()
+            return avg_score
 
 class Rating(db.Model):
     __tablename__ = 'ratings'

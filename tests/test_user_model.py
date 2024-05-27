@@ -1,6 +1,6 @@
 import unittest
 from app.models import User, Flat, Like, Rating
-from app import db
+from app import db, create_app
 import pandas as pd
 
 class UserModelPasswordTestCase(unittest.TestCase):
@@ -25,9 +25,19 @@ class UserModelPasswordTestCase(unittest.TestCase):
 
 
 class UserModelTestCase(unittest.TestCase):
+
     def setUp(self):
+        self.app = create_app('testing')
+        self.app_context = self.app.app_context()
+        self.app_context.push()
+        db.create_all()
         self.user = User()
         self.flat = Flat()
+
+    def tearDown(self):
+        db.session.remove()
+        db.drop_all()
+        self.app_context.pop()
 
     def test_like_new_flat(self):
         self.user.like_flat(self.flat)

@@ -58,7 +58,13 @@
     </div>
 
     <div class="container col-md-12">
-        <h2>User Ratings</h2>
+        <h2>
+            {% if avg_rating is not none %}
+            User Ratings - AVG: {{ avg_rating }} 
+            {% else %}
+            No ratings yet
+            {% endif %}
+        </h2>
         {% for rating in ratings %}
             <ul class="posts">
                 <li class="post">
