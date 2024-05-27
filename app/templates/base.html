@@ -1,6 +1,7 @@
 {% extends "bootstrap/base.html" %}
 {% block head %}
 {{ super() }}
+<html data-bs-theme="dark">
 <link rel= "stylesheet" type= "text/css" href= "{{ url_for('static',filename='style.css') }}">
 <link rel="icon" href="{{ url_for('static',filename='favo.png') }}" type="image/x-icon">
 {% endblock %}
@@ -48,5 +49,6 @@
     {% endfor %}
 
 </div>
+
 {% block page_content %}{% endblock %}
 {% endblock %}

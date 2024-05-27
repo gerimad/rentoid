@@ -56,7 +56,7 @@ class User(db.Model, UserMixin):
     rated = db.relationship('Rating', foreign_keys='Rating.user_id', backref='user', lazy='dynamic')
     
     def __repr__(self):
-        return f"<User {self.username}"
+        return f"<User {self.username}>"
 
     @property
     def password(self):
@@ -108,6 +108,14 @@ class User(db.Model, UserMixin):
         flats_data = [(flat.id, flat.price, flat.rooms, flat.sqm) for flat in flats_table]
         flats  = pd.DataFrame(flats_data, columns=['flat_id', 'price', 'rooms', 'sqm'])
 
+
+        best_flat_id = self.compute_best_flat(rated_flats, flats)
+
+        best = db.session.query(Flat).filter_by(id=int(best_flat_id)).first()
+        return best
+    
+    @staticmethod
+    def compute_best_flat(rated_flats, flats):
         scaler = MinMaxScaler()
         features = ['price', 'rooms', 'sqm']
 
@@ -126,8 +134,8 @@ class User(db.Model, UserMixin):
         recommended_flats = unrated_flats.sort_values(by='similarity', ascending=False)
         best_flat_id = recommended_flats['flat_id'].iloc[0]
 
-        best = db.session.query(Flat).filter_by(id=int(best_flat_id)).first()
-        return best
+        return best_flat_id
+
     
     def get_rating(self, flat):
         if self.has_rated_flat():
