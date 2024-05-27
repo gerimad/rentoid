@@ -74,7 +74,7 @@ def summariser():
     form = ListingForm()
     if form.validate_on_submit():
         old_text = session.get('text')
-        flash('Submitted the listing succesfully!')
+        flash('Submitted the listing succesfully!', 'alert-success')
         session['text'] = infer.inference(form.text.data)
         return redirect(url_for('summariser'))
     return render_template('summariser.html', form=form, text=session.get('text'))
@@ -105,7 +105,7 @@ def recommend():
     form = RatingForm()
     if form.validate_on_submit():
         old_rating = session.get('rating')
-        flash('Submitted the rating succesfully!')
+        flash('Submitted the rating succesfully!', 'alert-success')
 
     return render_template('recommend.html', listing=summary, form=form)
 

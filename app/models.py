@@ -49,11 +49,11 @@ class Rating(db.Model):
     flat_id = db.Column(db.Integer, db.ForeignKey('flats.id'))
     rating = db.Column(db.Float)
 
+    __table_args__ = (db.UniqueConstraint('user_id', 'flat_id', name='unique_user_flat_rating'),)
+
     def __repr__(self):
-        return f"<Rating {self.id}>"
+        return f"<Rating flat: {self.flat_id} by user: {self.user_id}>"
     
-    def __str__(self):
-        return jsonify(self)
     
     def get_author(self):
         return User.query.filter_by(id=self.user_id).first().username
@@ -63,6 +63,8 @@ class Like(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
     flat_id = db.Column(db.Integer, db.ForeignKey('flats.id'))
+
+    __table_args__ = (db.UniqueConstraint('user_id', 'flat_id', name='unique_user_flat_like'),)
 
 class User(db.Model, UserMixin):
     __tablename__ = 'users'

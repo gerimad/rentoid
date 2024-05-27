@@ -18,17 +18,16 @@ def recommend():
     if form.submit.data and form.validate():
         current_user.rate_flat(best_flat, form.score.data)
         db.session.commit()
-        flash('Submitted the rating succesfully!')
+        flash('Submitted the rating succesfully!', 'alert-success')
         return redirect(url_for('.recommend'))
 
     if form2.submit.data and form2.validate():
         summary = infer.inference(best_flat.text)
-        flash('Summary created!')
-        #return redirect(url_for('.recommend'))
+        flash('Summary created!', 'alert-success')
 
 
     return render_template('recommend.html', summary=summary, form=form, form2=form2, flat=best_flat)
-    
+
 
 @recommender.route('/like/<int:flat_id>/<action>')
 @login_required

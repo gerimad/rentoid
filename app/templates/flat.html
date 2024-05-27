@@ -71,7 +71,7 @@
             {% else %}
             <p>You have not rated this flat yet.</p>
             {% endif %}
-            
+            {{ wtf.quick_form(rating_form) }}
 
         <h2>
             {% if avg_rating is not none %}

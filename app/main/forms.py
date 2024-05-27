@@ -7,7 +7,7 @@ class ListingForm(FlaskForm):
     submit = SubmitField('Summarize')
 
 class RatingForm(FlaskForm):
-    score = DecimalField('What score would you give this flat? (1-10)', validators=[NumberRange(min=0, max=10, message="lba")])
+    score = DecimalField('What score would you give this flat? (1-10)', validators=[NumberRange(min=1, max=10, message="Make sure you enter your rating")])
     submit = SubmitField('Submit')
 
 class SummariseForm(FlaskForm):
