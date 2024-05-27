@@ -34,6 +34,7 @@ def summarise():
     return render_template('summariser.html', form=form, text=text)
 
 @main.route('/flat/<int:flat_id>', methods=["GET", "POST"])
+@login_required
 def flat(flat_id):
     flat = Flat.query.filter_by(id=flat_id).first()
     ratings = Rating.query.filter_by(flat_id=flat_id).all()
@@ -45,3 +46,15 @@ def flat(flat_id):
         flash('Summary successfully created!')
     
     return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary)
+
+@main.route('/like/<int:flat_id>/<action>')
+@login_required
+def like_action(flat_id, action):
+    flat = Flat.query.filter_by(id=flat_id).first_or_404()
+    if action == 'like':
+        current_user.like_flat(flat)
+        db.session.commit()
+    if action == 'unlike':
+        current_user.unlike_flat(flat)
+        db.session.commit()
+    return redirect(url_for('.flat', flat_id=flat_id))

@@ -44,7 +44,6 @@
     </div>
 
     <div class="container col-md-12">
-        
         {{ wtf.quick_form(form) }}
         {% if current_user.has_liked_flat(flat) %}
         <a href="{{ url_for('recommender.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
