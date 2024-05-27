@@ -2,7 +2,7 @@ from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from app.llm.inference import InferenceEngine
+from app.inference import InferenceEngine
 from config import config
 from sqlalchemy import MetaData
 
@@ -32,6 +32,9 @@ def create_app(config_name):
 
     from .main import main as main_blueprint
     app.register_blueprint(main_blueprint)
+
+    from .flats import flats as flat_blueprint
+    app.register_blueprint(flat_blueprint)
 
     from .llm import llm as llm_blueprint
     app.register_blueprint(llm_blueprint)

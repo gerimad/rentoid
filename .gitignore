@@ -7,3 +7,4 @@ db.csv
 dbase1
 dev-data.sqlite
 data-dev*.sqlite
+test-data.sqlite

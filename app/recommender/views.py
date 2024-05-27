@@ -3,7 +3,7 @@ from flask import redirect, request, flash, session, render_template, url_for
 from .. import db, infer
 from . import recommender
 from .forms import RatingForm
-from ..main.forms import SummariseForm
+from ..llm.forms import SummariseForm
 from ..models import Flat, Rating
 
 

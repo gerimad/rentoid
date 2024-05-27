@@ -29,7 +29,7 @@
                         <strong>Location: </strong>{{ liked_flat.location }} 
                     </div>
                     <div>
-                        <a href="{{ url_for('.flat', flat_id=liked_flat.id) }}">More details</a>
+                        <a href="{{ url_for('flats.flat', flat_id=liked_flat.id) }}">More details</a>
                     </div>
                 </li>
 
@@ -57,7 +57,7 @@
                         <strong>Location: </strong>{{ rated_flat.location }} <br>
                     </div>
                     <div>
-                        <a href="{{ url_for('.flat', flat_id=rated_flat.id) }}">More details</a>
+                        <a href="{{ url_for('flats.flat', flat_id=rated_flat.id) }}">More details</a>
                     </div>
                 </li>
 

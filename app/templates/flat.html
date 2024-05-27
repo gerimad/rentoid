@@ -47,11 +47,11 @@
         <div class="container">
             {% if current_user.has_liked_flat(flat) %}
             <h3>
-                <a href="{{ url_for('main.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
+                <a href="{{ url_for('flats.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
             </h3>
             {% else %}
             <h3>
-                <a href="{{ url_for('main.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
+                <a href="{{ url_for('flats.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
             </h3>
             {% endif %}
         </div>
