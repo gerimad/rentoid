@@ -37,6 +37,10 @@ class Flat(db.Model):
         else:
             avg_score = ratings.with_entities(func.avg(Rating.rating)).scalar()
             return avg_score
+    
+    @classmethod
+    def get_all(cls):
+        return cls.query.all()
 
 class Rating(db.Model):
     __tablename__ = 'ratings'

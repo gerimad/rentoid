@@ -39,6 +39,12 @@ def flat(flat_id):
     flat = Flat.query.filter_by(id=flat_id).first_or_404()
     ratings = Rating.query.filter_by(flat_id=flat_id).all()
 
+    my_rating = Rating.query.filter_by(flat_id=flat_id, user_id=current_user.id)
+    if my_rating.count() == 1:
+        my_rating = my_rating.first()
+    else:
+        my_rating = None
+
     try:
         avg_score = flat.average_rating()
     except FlatError as e:
@@ -51,7 +57,14 @@ def flat(flat_id):
         summary = infer.inference(flat.text)
         flash('Summary successfully created!')
     
-    return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary, avg_rating = avg_score)
+    return render_template('flat.html', form=form, flat=flat, ratings=ratings, summary=summary, avg_rating = avg_score, my_rating=my_rating)
+
+@main.route('/all_flats')
+@login_required
+def entries():
+    flats = Flat.get_all()
+    return render_template('entries.html', flats = flats)
+
 
 @main.route('/like/<int:flat_id>/<action>')
 @login_required

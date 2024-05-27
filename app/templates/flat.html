@@ -58,6 +58,21 @@
     </div>
 
     <div class="container col-md-12">
+            <h2> Your Rating </h2>
+            {% if my_rating is not none %}
+            <ul class="posts">
+                <li class="post">
+                    <div class="post-body">
+                        <strong> {{ my_rating.get_author() }} </strong> <br>
+                        {{ my_rating.rating }}
+                    </div>
+                </li>
+            </ul>
+            {% else %}
+            <p>You have not rated this flat yet.</p>
+            {% endif %}
+            
+
         <h2>
             {% if avg_rating is not none %}
             User Ratings - AVG: {{ avg_rating }} 
