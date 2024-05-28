@@ -2,7 +2,6 @@ from flask import Flask, render_template
 from flask_bootstrap import Bootstrap
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
-from app.inference import InferenceEngine
 from config import config
 from sqlalchemy import MetaData
 
@@ -17,7 +16,6 @@ convention = {
 metadata = MetaData(naming_convention=convention)
 bootstrap = Bootstrap()
 db = SQLAlchemy(metadata=metadata)
-infer = InferenceEngine()
 login_manager = LoginManager()
 login_manager.login_view = 'auth.login'
 

@@ -2,13 +2,13 @@ import openai
 
 
 class InferenceEngine():
-    def __init__(self):
-        self.model="gpt-3.5-turbo"
-        self.client = openai.OpenAI()
+    model="gpt-3.5-turbo"
+    client = openai.OpenAI()
 
-    def inference(self, text):
-        response = self.client.chat.completions.create(
-            model=self.model,
+    @classmethod
+    def inference(cls, text):
+        response = cls.client.chat.completions.create(
+            model= cls.model,
             messages=[
                 {"role": "system", "content": "Act as a real estate salesman with 15+ years of experience with selling apartments in Budapest."},
                 {"role": "user", "content": 

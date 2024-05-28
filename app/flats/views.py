@@ -2,8 +2,9 @@ from flask import render_template, redirect, url_for, flash
 from flask_login import login_required, current_user
 from . import flats
 from .forms import SummariseForm, RatingForm
-from .. import db, infer
+from .. import db
 from ..model.models import Flat, FlatError, Rating
+from ..llm.inference import InferenceEngine
 
 @flats.route('/flat/<int:flat_id>', methods=["GET", "POST"])
 @login_required
@@ -33,7 +34,7 @@ def flat(flat_id):
         return redirect(f'{flat_id}')
 
     if form.submit.data and form.validate():
-        summary = infer.inference(flat.text)
+        summary = InferenceEngine.inference(flat.text)
         flash('Summary successfully created!', 'alert-success')
 
     

@@ -1,9 +1,10 @@
 from flask_login import current_user, login_required
 from flask import redirect, request, flash, session, render_template, url_for
-from .. import db, infer
+from .. import db 
 from . import recommender
 from .forms import RatingForm
 from ..llm.forms import SummariseForm
+from ..llm.inference import InferenceEngine
 from ..model.models import Flat
 
 
@@ -22,7 +23,7 @@ def recommend():
         return redirect(url_for('.recommend'))
 
     if form2.submit.data and form2.validate():
-        summary = infer.inference(best_flat.text)
+        summary = InferenceEngine.inference(best_flat.text)
         flash('Summary created!', 'alert-success')
 
 
