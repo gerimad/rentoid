@@ -1,7 +1,7 @@
 from flask import render_template, session, redirect, url_for, flash, request
 from flask_login import login_required, current_user
 from . import main
-from ..models import Flat, Rating, Like, FlatError
+from ..model.models import Flat
 
 @main.route('/')
 def index():

@@ -1,5 +1,5 @@
 import unittest
-from app.models import User, Flat, Like, Rating
+from app.model.models import User, Flat, Like, Rating
 from app import db, create_app
 import pandas as pd
 

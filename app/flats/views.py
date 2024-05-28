@@ -3,7 +3,7 @@ from flask_login import login_required, current_user
 from . import flats
 from .forms import SummariseForm, RatingForm
 from .. import db, infer
-from ..models import Flat, Rating, FlatError
+from ..model.models import Flat, FlatError, Rating
 
 @flats.route('/flat/<int:flat_id>', methods=["GET", "POST"])
 @login_required

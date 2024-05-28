@@ -4,7 +4,7 @@ from .. import db, infer
 from . import recommender
 from .forms import RatingForm
 from ..llm.forms import SummariseForm
-from ..models import Flat, Rating
+from ..model.models import Flat
 
 
 @recommender.route('/recommend', methods=['GET', 'POST'])

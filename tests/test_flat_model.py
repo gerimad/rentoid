@@ -1,5 +1,6 @@
 import unittest
-from app.models import User, Flat, Like, Rating, FlatError
+from app.model.models import Flat, FlatError, Rating
+
 from app import db, create_app
 
 class FlatModelCase(unittest.TestCase):

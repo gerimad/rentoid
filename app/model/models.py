@@ -2,7 +2,7 @@ from werkzeug.security import generate_password_hash, check_password_hash
 from flask_login import UserMixin
 from flask import jsonify
 from sqlalchemy import func
-from . import db, login_manager
+from .. import db, login_manager
 
 import numpy as np
 import pandas as pd

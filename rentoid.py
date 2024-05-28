@@ -1,6 +1,6 @@
 import os
 from app import create_app, db
-from app.models import Flat, Rating, User, Like
+from app.model.models import Flat, Rating, User, Like
 from flask_migrate import Migrate
 
 
