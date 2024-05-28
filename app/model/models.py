@@ -10,11 +10,35 @@ from sklearn.metrics.pairwise import cosine_similarity
 from sklearn.preprocessing import MinMaxScaler
 
 class FlatError(Exception):
+    """
+    FlatError exception class for handling errors occurring in the Flat class.
+    
+    Attributes:
+    - message (str): Error message describing the nature of the error.
+    """
     def __init__(self, message="An error occurred in the Flat class"):
         self.message = message
         super().__init__(self.message)
 
 class Flat(db.Model):
+    """
+    Flat class representing apartments stored in the database.
+
+    Attributes:
+    - id (int): Identifier, primary key.
+    - price (int): Price of the apartment.
+    - sqm (int): Square meter area of the apartment.
+    - rooms (Numeric): Number of rooms.
+    - location (Text): Location of the apartment.
+    - text (Text): Description of the apartment.
+    - link (str): Link to the apartment advertisement.
+
+    Methods:
+    - __repr__(): str - Returns the representation of the apartment.
+    - __str__(): str - Returns the description of the apartment as text.
+    - average_rating(): float - Returns the average rating of the apartment.
+    - get_all(): List[Flat] - Returns all apartments.
+    """
     __tablename__ = 'flats'
     id = db.Column(db.Integer, primary_key=True)
     price = db.Column(db.Integer)
@@ -43,6 +67,19 @@ class Flat(db.Model):
         return cls.query.all()
 
 class Rating(db.Model):
+    """
+    Rating class representing ratings stored in the database.
+
+    Attributes:
+    - id (int): Identifier, primary key.
+    - user_id (int): User identifier, foreign key.
+    - flat_id (int): Apartment identifier, foreign key.
+    - rating (float): Rating score.
+
+    Methods:
+    - __repr__(): str - Returns the representation of the rating.
+    - get_author(): str - Returns the username of the rating's author.
+    """
     __tablename__ = 'ratings'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -59,6 +96,14 @@ class Rating(db.Model):
         return User.query.filter_by(id=self.user_id).first().username
 
 class Like(db.Model):
+    """
+    Like class representing likes stored in the database.
+
+    Attributes:
+    - id (int): Identifier, primary key.
+    - user_id (int): User identifier, foreign key.
+    - flat_id (int): Apartment identifier, foreign key.
+    """
     __tablename__ = 'likes'
     id = db.Column(db.Integer, primary_key=True)
     user_id = db.Column(db.Integer, db.ForeignKey('users.id'))
@@ -67,6 +112,31 @@ class Like(db.Model):
     __table_args__ = (db.UniqueConstraint('user_id', 'flat_id', name='unique_user_flat_like'),)
 
 class User(db.Model, UserMixin):
+    """
+    User class representing users stored in the database.
+
+    Attributes:
+    - id (int): Identifier, primary key.
+    - email (str): User's email address.
+    - username (str): User's username.
+    - password_hash (str): Hash of the user's password.
+    - liked (List[Like]): List of apartments liked by the user.
+    - rated (List[Rating]): List of apartments rated by the user.
+
+    Methods:
+    - __repr__(): str - Returns the representation of the user.
+    - password(): None - Prevents the password from being readable.
+    - password(password: str): void - Sets the password and stores its hash.
+    - verify_password(password: str): boolean - Verifies the correctness of the password.
+    - has_liked_flat(flat: Flat): boolean - Checks if the user has liked the apartment.
+    - like_flat(flat: Flat): void - Likes the apartment.
+    - unlike_flat(flat: Flat): void - Removes the like from the apartment.
+    - has_rated_flat(flat: Flat): boolean - Checks if the user has rated the apartment.
+    - rate_flat(flat: Flat, score: float): void - Rates the apartment.
+    - get_best_flat(): Flat - Returns the best recommended apartment for the user.
+    - compute_best_flat(rated_flats: DataFrame, flats: DataFrame): int - Computes the best apartment based on ratings.
+    - get_rating(flat: Flat): int - Returns the rating given by the user to the apartment.
+    """
     __tablename__ = 'users'
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(64), unique=True, index=True)
