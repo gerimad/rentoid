@@ -18,7 +18,7 @@
 <div class="container col-md-6">
     <h1>Favourite Flats</h1>
     {% if current_user.is_authenticated %}
-        {% if liked_flats is defined %}
+        {% if liked_flats is defined and liked_flats[0] %}
             {% for liked_flat in liked_flats %}
             <ul class="posts">
                 <li class="post">
@@ -36,7 +36,7 @@
             </ul>
             {% endfor %}
         {% else %}
-        <p> You dont have any favourite flats.</p>
+        <p> You don't have any favourite flats.</p>
         {% endif %}
     {% else %}
         Login to see your favourite flats.
@@ -46,7 +46,7 @@
 <div class="container col-md-6">
     <h1>Rated flats</h1>
     {% if current_user.is_authenticated %}
-        {% if rated_flats is defined %}
+        {% if rated_flats is defined and rated_flats[0] %}
             {% for rated_flat in rated_flats %}
             <ul class="posts">
                 <li class="post">
@@ -64,7 +64,7 @@
             </ul>
             {% endfor %}
         {% else %}
-        <p> You dont have any rated flats. Click here to rate some.</p>
+        <p> You don't have any rated flats.</p>
         {% endif %}
     {% else %}
         Login to see your rated flats.

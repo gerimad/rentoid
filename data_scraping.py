@@ -115,7 +115,7 @@ class DataCleaner(abc.ABC):
     def cleanData(self):
         raise NotImplementedError
     
-class AlberletHuDataCleaner(abc.ABC):
+class AlberletHuDataCleaner(DataCleaner):
     def __init__(self, saver: DataSaver, cleaned_path):
         self.__saver = saver
         self.__cleaned_path = cleaned_path
@@ -170,5 +170,6 @@ class AlberletHuDataCleaner(abc.ABC):
 if __name__ == "__main__":
     print('xd')
     scraper = AlberletHuScraper(start_url='https://www.alberlet.hu/kiado_alberlet/ingatlan-tipus:lakas/megye:budapest/keres:normal/limit:24', limit=5)
-    saver = CSVSaver(scraper=scraper, db_path='testing.csv').saveDB()
+    saver = CSVSaver(scraper=scraper, db_path='testing.csv')
+    saver.saveDB()
     cleaner = AlberletHuDataCleaner(saver, 'testing_cleaned').cleanData()
