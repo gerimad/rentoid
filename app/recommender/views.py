@@ -2,7 +2,7 @@ from flask_login import current_user, login_required
 from flask import redirect, request, flash, session, render_template, url_for
 from .. import db 
 from . import recommender
-from .forms import RatingForm
+from ..flats.forms import RatingForm
 from ..llm.forms import SummariseForm
 from ..llm.inference import InferenceEngine
 from ..model.models import Flat
