@@ -1,98 +1,45 @@
 import openai
-# import re
-# import huspacy
-# import spacy
+import os
 
-
-# from transformers import AutoTokenizer, AutoModelForSeq2SeqLM
 
 class InferenceEngine():
-    # nlp = spacy.load("hu_core_news_lg")
-    # def __init__(self):
-    #     #huspacy.download() #FIXME
-    #     pass
+    model="gpt-3.5-turbo"
+    client = openai.OpenAI()
+    api_key = os.getenv('OPENAI_API_KEY')
+    pre_prompts = [
+        {"role": "system", "content": "Act as a real estate salesman with 15+ years of experience with selling apartments in Budapest. Your task is to extract the most important information from apartment listings. "},
+        {"role": "user", "content": 
+        """The next message will be a real estate advert for an apartment for rent. Your answer must follow this format:
+        Rent price: <rent price>
 
-    # def inference(self, text):
-    #     text = "summarize: " + self.text_block_preprocessor(text)
+        Location: <what is the location of the flat>
 
-    #     tokenizer = AutoTokenizer.from_pretrained("./alberlet_model_save")
-    #     inputs = tokenizer(text, return_tensors="pt").input_ids
+        SQM: <square meters>, <number of rooms> 
 
-    #     model = AutoModelForSeq2SeqLM.from_pretrained("./alberlet_model_save")
-    #     outputs = model.generate(inputs, max_new_tokens=100, do_sample=False)
+        Common costs: <common cost> 
 
-    #     return tokenizer.decode(outputs[0], skip_special_tokens=True)
-    
+        Methods of transportation: <public transportation opportunities> 
 
-    # def preprocessor(self, word):
-    #     if type(word) == str:
-    #         word = re.sub(r'[^\w\s]', '', word)
-    #         word = re.sub(r'<[^>]*>', '', word)
-    #         word = re.sub(r'<[0-9]*>', '', word)
-    #         word = re.sub(r'[\W]+', '', word)
-    #         return word
+        Availability: <when can you move in and whats the downpayment> 
 
-    # def word_processor(self, line):
-    #     tokens = InferenceEngine.nlp(line)
-    #     words = []
+        Recommended for: <what kind of person would like this place and why> 
 
-    #     for token in tokens:
-    #         if token.is_stop == False:
-    #             token_preprocessed = self.preprocessor(token.lemma_)
-    #             if token_preprocessed != '':
-    #                 words.append(token_preprocessed)
-    #     return (words)
+        Pros: <pros of the apartment>
 
-    # def text_block_preprocessor(self,text):
+        Cons: <cons of the apartment>
 
-    #     make_sentences = InferenceEngine.nlp(text)
+        Ideal Tenant: <what is the ideal tenant from the perspective of the landlord>
 
-    #     sentences_lemmata_list = [sentence.lemma_.lower() for sentence in make_sentences.sents]
+        If you cannot extract information about a specific feature then write N/A as value.
+        """
+        },
+    ]
 
-    #     these_processed_sentences = ''
-
-    #     for item in sentences_lemmata_list:
-    #         words = self.word_processor(item)
-    #         line = ' '.join(words)
-    #         these_processed_sentences += (' ' + line)
-
-    #     return these_processed_sentences
-
-    # def create_summary(row):
-    #     return f"bérleti díj: {row['price']}, hely: {row['location']}, terület: {row['sqm']}"
-
-    def __init__(self):
-        self.model="gpt-3.5-turbo"
-        self.client = openai.OpenAI()
-
-    def inference(self, text):
-        response = self.client.chat.completions.create(
-            model=self.model,
-            messages=[
-                {"role": "system", "content": "Act as a real estate salesman with 15+ years of experience with selling apartments in Budapest."},
-                {"role": "user", "content": 
-                """I will give you a real estate advert for an apartment for rent. You will extract the most important features of the apartment and provide it this format:
-                Rent price: <rent price>
-
-                Location: <location of the apartment> 
-
-                SQM: <square meters>, <number of rooms> 
-
-                Common costs: <common cost> 
-
-                Methods of transportation: <public transportation opportunities> 
-
-                Availability: <when can you move in and whats the downpayment> 
-
-                Recommended for: <what kind of person would like this place and why> 
-
-                Pros: <pros of the apartment>
-
-                Cons: <cons of the apartment>
-
-                If you cannot extract information about a specific feature then write N/A as value.
-                """
-                },
+    @classmethod
+    def inference(cls, text):
+        response = cls.client.chat.completions.create(
+            model= cls.model,
+            messages=[*cls.pre_prompts,
                 {"role": "user", "content": text}
             ]
         )

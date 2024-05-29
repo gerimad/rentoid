@@ -43,10 +43,43 @@
         <h3>
             <a href="{{ flat.link }}" target="_blank">Go to the listing website</a>
         </h3>
+
+        <div class="container">
+            {% if current_user.has_liked_flat(flat) %}
+            <h3>
+                <a href="{{ url_for('flats.like_action', flat_id=flat.id, action='unlike') }}">Remove from favourites</a>
+            </h3>
+            {% else %}
+            <h3>
+                <a href="{{ url_for('flats.like_action', flat_id=flat.id, action='like') }}">Save to favourites</a>
+            </h3>
+            {% endif %}
+        </div>
     </div>
 
     <div class="container col-md-12">
-        <h2>User Ratings</h2>
+            <h2> Your Rating </h2>
+            {% if my_rating is not none %}
+            <ul class="posts">
+                <li class="post">
+                    <div class="post-body">
+                        <strong> {{ my_rating.get_author() }} </strong> <br>
+                        {{ my_rating.rating }}
+                    </div>
+                </li>
+            </ul>
+            {% else %}
+            <p>You have not rated this flat yet.</p>
+            {% endif %}
+            {{ wtf.quick_form(rating_form) }}
+
+        <h2>
+            {% if avg_rating is not none %}
+            User Ratings - AVG: {{ avg_rating }} 
+            {% else %}
+            No ratings yet
+            {% endif %}
+        </h2>
         {% for rating in ratings %}
             <ul class="posts">
                 <li class="post">

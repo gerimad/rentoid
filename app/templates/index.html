@@ -4,6 +4,7 @@
 
 {% block page_content %}
 <div class="container">
+
 <h1 class="page-header"> Hello,
 {% if current_user.is_authenticated %}
     {{ current_user.username }}!
@@ -17,7 +18,7 @@
 <div class="container col-md-6">
     <h1>Favourite Flats</h1>
     {% if current_user.is_authenticated %}
-        {% if liked_flats is defined %}
+        {% if liked_flats is defined and liked_flats[0] %}
             {% for liked_flat in liked_flats %}
             <ul class="posts">
                 <li class="post">
@@ -28,14 +29,14 @@
                         <strong>Location: </strong>{{ liked_flat.location }} 
                     </div>
                     <div>
-                        <a href="{{ url_for('.flat', flat_id=liked_flat.id) }}">More details</a>
+                        <a href="{{ url_for('flats.flat', flat_id=liked_flat.id) }}">More details</a>
                     </div>
                 </li>
 
             </ul>
             {% endfor %}
         {% else %}
-        <p> You dont have any favourite flats.</p>
+        <p> You don't have any favourite flats.</p>
         {% endif %}
     {% else %}
         Login to see your favourite flats.
@@ -45,7 +46,7 @@
 <div class="container col-md-6">
     <h1>Rated flats</h1>
     {% if current_user.is_authenticated %}
-        {% if rated_flats is defined %}
+        {% if rated_flats is defined and rated_flats[0] %}
             {% for rated_flat in rated_flats %}
             <ul class="posts">
                 <li class="post">
@@ -56,14 +57,14 @@
                         <strong>Location: </strong>{{ rated_flat.location }} <br>
                     </div>
                     <div>
-                        <a href="{{ url_for('.flat', flat_id=rated_flat.id) }}">More details</a>
+                        <a href="{{ url_for('flats.flat', flat_id=rated_flat.id) }}">More details</a>
                     </div>
                 </li>
 
             </ul>
             {% endfor %}
         {% else %}
-        <p> You dont have any rated flats. Click here to rate some.</p>
+        <p> You don't have any rated flats.</p>
         {% endif %}
     {% else %}
         Login to see your rated flats.

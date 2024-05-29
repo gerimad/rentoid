@@ -1,14 +1,27 @@
 {% extends "base.html" %}
 
-{% block title %}Flat Tinder{% endblock %}
+{% block title %}All Flats{% endblock %}
 
 {% block page_content %}
-<h1 class="page-header">Entries</h1>
-<ul>
-    {% for listing in listings %}
-    <li>
-        <p>{{ listing }}</p>
-    </li>
-    {% endfor %}
-</ul>
+<div class="container">
+    <h1 class="page-header">All Flats</h1>
+    <ul>
+        {% for flat in flats %}
+        <ul class="posts">
+            <li class="post">
+                <div class="post-body">
+                    <strong>ID: </strong>{{ flat.id }} <br>
+                    <strong>Price: </strong>{{ flat.price }} <br>
+                    <strong>SQM: </strong>{{ flat.sqm }} <br>
+                    <strong>Location: </strong>{{ flat.location }} 
+                </div>
+                <div>
+                    <a href="{{ url_for('.flat', flat_id=flat.id) }}">More details</a>
+                </div>
+            </li>
+        </ul>
+        {% endfor %}
+    </ul>
+
+</div>
 {% endblock %}

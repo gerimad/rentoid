@@ -4,14 +4,12 @@
 {% block title %}Rentoid - Login{% endblock %}
 
 {% block page_content %}
-<div class="container" style="width: 600px;">
-    <div class="page-header">
-        <h1>Login</h1>
-    </div>
+<div class="container">
+    <h1 class="page-header">Login</h1>
     <div class="col-md-8">
         {{ wtf.quick_form(form)}}
     </div>
-    <div class="col-md-3">
+    <div class="col-md-4">
         <p>
             New user?
             <a href="{{ url_for('auth.register') }}">
